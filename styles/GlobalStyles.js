@@ -1,5 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
-import { COLORS } from '../constants';
+import { COLORS, BREAKPOINTS } from '../constants';
 
 const GlobalStyles = createGlobalStyle`
 /* http://meyerweb.com/eric/tools/css/reset/
@@ -68,11 +68,16 @@ table {
 }
 
 html {
-  --color-white: ${COLORS.white};
-  --color-lightGray: ${COLORS.lightGray};
-  --color-grayishBlue: ${COLORS.grayishBlue};
-  --color-darkBlue: ${COLORS.darkBlue};
+  --text-purple: ${COLORS.textPurple};
+  --text-purple-dark: ${COLORS.textPurpleDark};
+  --text-black: ${COLORS.textBlack};
+  --text-white-100: ${COLORS.textWhite100};
  
+  color: #373b64;
+  background: url('/static/background.png');
+  background-position: 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
 
   /*
     Silence the warning about missing Reach Dialog styles
@@ -82,7 +87,7 @@ html {
 
 html, body, #root {
   height: 100%;
-  background-color: var(--color-lightGray);
+  
 }
 `;
 
