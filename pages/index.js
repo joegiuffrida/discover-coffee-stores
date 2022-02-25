@@ -17,13 +17,13 @@ export default function Home() {
         <link rel="icon" href="favicon.ico" />
       </Head>
       <Main>
+        <ImageWrapper>
+          <Image src="/static/hero-image.png" width={700} height={400} />
+        </ImageWrapper>
         <Banner
           buttonText="View stores nearby"
           handleOnClick={handleOnBannerBtnClick}
         />
-        <ImageWrapper>
-          <Image src="/static/hero-image.png" width={700} height={400} />
-        </ImageWrapper>
       </Main>
     </Container>
   );
@@ -57,7 +57,7 @@ const Main = styled.main`
 const ImageWrapper = styled.div`
   display: none;
 
-  @media ${QUERIES.largeAndUp} {
+  @media ${QUERIES.mediumAndUp} {
     display: revert;
     position: absolute;
     top: 0px;

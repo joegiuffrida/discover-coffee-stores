@@ -24,7 +24,9 @@ const Banner = ({ buttonText, handleOnClick }) => {
   twoExtraLargeAndUp: min-width: 1536px; // 2 x extra large device
 **/
 const Container = styled.div`
+  position: relative;
   margin-bottom: 1rem;
+  z-index: 2;
 
   @media ${QUERIES.largeAndUp} {
     text-align: left;

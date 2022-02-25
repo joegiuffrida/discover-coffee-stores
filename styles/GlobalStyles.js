@@ -53,7 +53,7 @@ table {
 *:after {
   box-sizing: border-box;
   line-height: 1.5;
-  font-family: 'Outfit', sans-serif;
+  font-family: 'IBM Plex Sans', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: auto;
 }
