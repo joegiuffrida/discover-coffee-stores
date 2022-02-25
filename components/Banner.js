@@ -13,8 +13,6 @@ const Banner = ({ buttonText, handleOnClick }) => {
   );
 };
 
-export default Banner;
-
 // by default this is a mobile breakpoint
 /** 
   Breakpoints:
@@ -75,19 +73,19 @@ const Title2 = styled.span`
 `;
 
 const SubTitle = styled.p`
-  margin-top: 0.75rem;
+  /* margin-top: 0.75rem; */
   font-size: 1.5rem /* 24px */;
   line-height: 2rem /* 32px */;
 
   color: var(--text-white-100);
 
   @media ${QUERIES.smallAndUp} {
-    margin-top: 1.25rem;
+    /* margin-top: 1.25rem; */
     max-width: 36rem;
   }
 
   @media ${QUERIES.mediumAndUp} {
-    margin-top: 1.25rem;
+    /* margin-top: 1.25rem; */
   }
 
   @media ${QUERIES.largeAndUp} {
@@ -102,6 +100,7 @@ const Button = styled.button`
   color: white;
   outline: 0;
   border: 0px;
+  border-radius: 10px;
 
   padding-top: 1rem /* 16px */;
   padding-bottom: 1rem /* 16px */;
@@ -125,3 +124,5 @@ const Button = styled.button`
     padding-right: 2.5rem /* 40px */;
   }
 `;
+
+export default Banner;

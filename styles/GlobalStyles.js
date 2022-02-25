@@ -87,7 +87,17 @@ html {
 
 html, body, #root {
   height: 100%;
-  
+}
+
+button {
+  background-color: transparent;
+  background-image: none;
+  font-weight: 600;
+}
+
+button:focus {
+  outline: 1px dotted;
+  outline: 5px auto -webkit-focus-ring-color;
 }
 `;
 
