@@ -3,6 +3,7 @@ import Image from 'next/image';
 import styled from 'styled-components';
 
 import Banner from '../components/Banner';
+import Card from '../components/Card';
 import { QUERIES } from '../constants';
 
 export default function Home() {
@@ -17,12 +18,17 @@ export default function Home() {
         <link rel="icon" href="favicon.ico" />
       </Head>
       <Main>
-        <ImageWrapper>
+        {/* <ImageWrapper>
           <Image src="/static/hero-image.png" width={700} height={400} />
-        </ImageWrapper>
+        </ImageWrapper> */}
         <Banner
           buttonText="View stores nearby"
           handleOnClick={handleOnBannerBtnClick}
+        />
+        <Card
+          name="DarkHorse Coffee"
+          imgUrl="/static/hero-image.png"
+          href="/coffee-store/darkhorse-coffee"
         />
       </Main>
     </Container>
@@ -43,7 +49,6 @@ export default function Home() {
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-
   min-height: 100vh;
   padding: 4rem 4rem;
 `;
@@ -52,6 +57,10 @@ const Main = styled.main`
   display: flex;
   flex-direction: column;
   height: 100%;
+
+  @media ${QUERIES.mediumAndUp} {
+    align-items: center;
+  }
 `;
 
 const ImageWrapper = styled.div`
@@ -61,7 +70,7 @@ const ImageWrapper = styled.div`
     display: revert;
     position: absolute;
     top: 0px;
-    right: 5%;
+    left: 35%;
     z-index: 1;
   }
 `;

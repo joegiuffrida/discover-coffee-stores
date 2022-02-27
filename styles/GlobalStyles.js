@@ -52,7 +52,7 @@ table {
 *:before,
 *:after {
   box-sizing: border-box;
-  line-height: 1.5;
+  line-height: 1;
   font-family: 'IBM Plex Sans', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: auto;
@@ -98,6 +98,10 @@ button {
 button:focus {
   outline: 1px dotted;
   outline: 5px auto -webkit-focus-ring-color;
+}
+
+a {
+  text-decoration: none;
 }
 `;
 

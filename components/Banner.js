@@ -38,22 +38,20 @@ const Title = styled.h1`
   font-weight: 800;
   color: var(--text-black);
 
-  font-size: 3rem /* 48px */;
-  line-height: 1;
+  /* font-size: 3rem /* 48px */
+  font-size: clamp(3rem, 3.5vw + 1.5rem, 4.6rem);
+  /* line-height: 1; */
 
   @media ${QUERIES.smallAndUp} {
-    font-size: 3rem;
-    line-height: 1;
+    /* font-size: 3rem; */
   }
 
   @media ${QUERIES.mediumAndUp} {
-    font-size: 3.75rem /* 60px */;
-    line-height: 1;
+    /* font-size: 3.75rem /* 60px */
   }
 
   @media ${QUERIES.largeAndUp} {
-    font-size: 4.5rem /* 72px */;
-    line-height: 1;
+    /* font-size: 4.5rem /* 72px */
   }
 `;
 
@@ -78,6 +76,7 @@ const SubTitle = styled.p`
   /* margin-top: 0.75rem; */
   font-size: 1.5rem /* 24px */;
   line-height: 2rem /* 32px */;
+  margin-top: 0.75rem;
 
   color: var(--text-white-100);
 
