@@ -5,8 +5,17 @@ import styled from 'styled-components';
 import Banner from '../components/Banner';
 import Card from '../components/Card';
 import { QUERIES } from '../constants';
+import coffeeStoresData from '../data/coffee-stores.json';
 
-export default function Home() {
+export const getStaticProps = async () => {
+  return {
+    props: {
+      coffeeStores: coffeeStoresData,
+    },
+  };
+};
+
+export default function Home({ coffeeStores }) {
   const handleOnBannerBtnClick = () => {
     console.log('hi banner button was clicked');
   };
@@ -25,23 +34,26 @@ export default function Home() {
           buttonText="View stores nearby"
           handleOnClick={handleOnBannerBtnClick}
         />
-        <CardLayout>
-          <Card
-            name="DarkHorse Coffee"
-            imgUrl="/static/hero-image.png"
-            href="/coffee-store/darkhorse-coffee"
-          />
-          <Card
-            name="DarkHorse Coffee"
-            imgUrl="/static/hero-image.png"
-            href="/coffee-store/darkhorse-coffee"
-          />
-          <Card
-            name="DarkHorse Coffee"
-            imgUrl="/static/hero-image.png"
-            href="/coffee-store/darkhorse-coffee"
-          />
-        </CardLayout>
+        {coffeeStores.length > 0 && (
+          <>
+            <CoffeeStoresHeading>Toronto Stores</CoffeeStoresHeading>
+            <CardLayout>
+              {coffeeStores.map((store) => {
+                return (
+                  <Card
+                    key={store.id}
+                    id={store.id}
+                    name={store.name}
+                    imgUrl={store.imgUrl}
+                    websiteUrl={store.websiteUrl}
+                    address={store.address}
+                    neighborhood={store.neighbourhood}
+                  />
+                );
+              })}
+            </CardLayout>
+          </>
+        )}
       </Main>
     </Container>
   );
@@ -61,7 +73,7 @@ export default function Home() {
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  min-height: 100%;
   padding: 4rem 4rem;
 `;
 
@@ -71,7 +83,7 @@ const Main = styled.main`
   height: 100%;
 
   @media ${QUERIES.mediumAndUp} {
-    align-items: center;
+    /* align-items: center; */
   }
 `;
 
@@ -85,6 +97,13 @@ const ImageWrapper = styled.div`
     left: 35%;
     z-index: 1;
   }
+`;
+
+const CoffeeStoresHeading = styled.h2`
+  font-weight: 800;
+  font-size: 2.25rem;
+  margin-bottom: 1.5rem;
+  color: var(--text-white-100);
 `;
 
 const CardLayout = styled.div`

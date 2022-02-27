@@ -3,10 +3,12 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { QUERIES } from '../constants';
 
-const Card = ({ name, imgUrl, href }) => {
+const Card = ({ id, name, imgUrl, websiteUrl, address, neighborhood }) => {
+  const urlPath = name.replace(/\s/g, '-');
+
   return (
     <div>
-      <Link href={href} passHref>
+      <Link href={`/coffee-store/${urlPath}`} passHref>
         <CardLink>
           <Container>
             <CardHeaderWrapper>
