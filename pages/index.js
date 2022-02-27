@@ -25,11 +25,23 @@ export default function Home() {
           buttonText="View stores nearby"
           handleOnClick={handleOnBannerBtnClick}
         />
-        <Card
-          name="DarkHorse Coffee"
-          imgUrl="/static/hero-image.png"
-          href="/coffee-store/darkhorse-coffee"
-        />
+        <CardLayout>
+          <Card
+            name="DarkHorse Coffee"
+            imgUrl="/static/hero-image.png"
+            href="/coffee-store/darkhorse-coffee"
+          />
+          <Card
+            name="DarkHorse Coffee"
+            imgUrl="/static/hero-image.png"
+            href="/coffee-store/darkhorse-coffee"
+          />
+          <Card
+            name="DarkHorse Coffee"
+            imgUrl="/static/hero-image.png"
+            href="/coffee-store/darkhorse-coffee"
+          />
+        </CardLayout>
       </Main>
     </Container>
   );
@@ -72,5 +84,20 @@ const ImageWrapper = styled.div`
     top: 0px;
     left: 35%;
     z-index: 1;
+  }
+`;
+
+const CardLayout = styled.div`
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  column-gap: 1.5rem;
+  row-gap: 1.5rem;
+
+  @media ${QUERIES.smallAndUp} {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @media ${QUERIES.largeAndUp} {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 `;
