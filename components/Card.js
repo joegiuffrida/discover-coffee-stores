@@ -4,7 +4,8 @@ import Link from 'next/link';
 import { QUERIES } from '../constants';
 
 const Card = ({ id, name, imgUrl, websiteUrl, address, neighborhood }) => {
-  const urlPath = name.replace(/\s/g, '-');
+  // replace the spaces in the name with dashes and make it lowercase. doing this so the path is the name of the coffee shop rather than just an id number
+  const urlPath = name.replace(/\s/g, '-').toLowerCase();
 
   return (
     <div>
@@ -56,6 +57,7 @@ const Container = styled.div`
 
   backdrop-filter: blur(10px);
 
+  /* glass filter effect for cards */
   background: hsla(0 0% 100% / 0.4);
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
