@@ -4,16 +4,23 @@ import Head from 'next/head';
 import Image from 'next/image';
 import styled from 'styled-components';
 
-import coffeeStoreData from '../../data/coffee-stores.json';
 import { QUERIES } from '../../constants';
+import { fetchCoffeeStores } from '../../lib/coffee-stores';
 
 export const getStaticProps = async ({ params }) => {
+  const coffeeStoreData = await fetchCoffeeStores();
   return {
     props: {
       coffeeStore: coffeeStoreData.find((coffeeStore) => {
         return (
-          coffeeStore.name.replace(/\s/g, '-').toLowerCase() ===
-          params.id.replace(/\s/g, '-').toLowerCase()
+          coffeeStore.name
+            .replace(/[\s\/]/g, '-')
+            .replace(/'/g, '')
+            .toLowerCase() ===
+          params.id
+            .replace(/[\s\/]/g, '-')
+            .replace(/'/g, '')
+            .toLowerCase()
         );
       }),
     },
@@ -21,9 +28,13 @@ export const getStaticProps = async ({ params }) => {
 };
 
 export const getStaticPaths = async () => {
+  const coffeeStoreData = await fetchCoffeeStores();
   const paths = coffeeStoreData.map((coffeeStore) => ({
     params: {
-      id: coffeeStore.name.replace(/\s/g, '-').toLowerCase(),
+      id: coffeeStore.name
+        .replace(/[\s\/]/g, '-')
+        .replace(/'/g, '')
+        .toLowerCase(),
     },
   }));
 
@@ -40,7 +51,7 @@ const CoffeeStore = ({ coffeeStore }) => {
     return <div>Loading...</div>;
   }
 
-  const { name, address, neighbourhood, imgUrl } = coffeeStore;
+  const { name, location, imgUrl } = coffeeStore;
 
   const handleUpvoteButton = () => {
     console.log('you clicked the up vote button!');
@@ -62,19 +73,29 @@ const CoffeeStore = ({ coffeeStore }) => {
             <Name>{name}</Name>
           </NameWrapper>
           <ImageWrapper>
-            <Image src={imgUrl} width={600} height={360} alt={name} />
+            <Image
+              src={
+                imgUrl ||
+                'https://images.unsplash.com/photo-1504753793650-d4a2b783c15e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80'
+              }
+              width={600}
+              height={360}
+              alt={name}
+            />
           </ImageWrapper>
         </ColOne>
 
         <ColTwo>
           <IconWrapper>
             <Image src="/static/icons/places.svg" width={24} height={24} />
-            <Text>{address}</Text>
+            <Text>{location.formatted_address}</Text>
           </IconWrapper>
-          <IconWrapper>
-            <Image src="/static/icons/nearMe.svg" width={24} height={24} />
-            <Text>{neighbourhood}</Text>
-          </IconWrapper>
+          {location.neighborhood && (
+            <IconWrapper>
+              <Image src="/static/icons/nearMe.svg" width={24} height={24} />
+              <Text>{location.neighborhood}</Text>
+            </IconWrapper>
+          )}
           <IconWrapper>
             <Image src="/static/icons/star.svg" width={24} height={24} />
             <Text>1</Text>
