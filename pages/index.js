@@ -5,12 +5,14 @@ import styled from 'styled-components';
 import Banner from '../components/Banner';
 import Card from '../components/Card';
 import { QUERIES } from '../constants';
-import coffeeStoresData from '../data/coffee-stores.json';
+import { fetchCoffeeStores } from '../lib/coffee-stores';
 
 export const getStaticProps = async () => {
+  const coffeeStoreData = await fetchCoffeeStores();
+
   return {
     props: {
-      coffeeStores: coffeeStoresData,
+      coffeeStores: coffeeStoreData,
     },
   };
 };
@@ -36,7 +38,7 @@ export default function Home({ coffeeStores }) {
         />
         {coffeeStores.length > 0 && (
           <>
-            <CoffeeStoresHeading>Toronto Stores</CoffeeStoresHeading>
+            <CoffeeStoresHeading>Sacramento Stores</CoffeeStoresHeading>
             <CardLayout>
               {coffeeStores.map((store) => {
                 return (
@@ -44,7 +46,10 @@ export default function Home({ coffeeStores }) {
                     key={store.id}
                     id={store.id}
                     name={store.name}
-                    imgUrl={store.imgUrl}
+                    imgUrl={
+                      store.imgUrl ||
+                      'https://images.unsplash.com/photo-1504753793650-d4a2b783c15e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80'
+                    }
                     websiteUrl={store.websiteUrl}
                     address={store.address}
                     neighborhood={store.neighbourhood}
