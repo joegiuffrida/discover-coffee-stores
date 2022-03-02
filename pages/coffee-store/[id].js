@@ -66,7 +66,7 @@ const CoffeeStore = ({ coffeeStore }) => {
         <ColOne>
           <BackToHomeLinkWrapper>
             <Link href="/" passHref>
-              <a>Back to home</a>
+              <a>← Back to home</a>
             </Link>
           </BackToHomeLinkWrapper>
           <NameWrapper>

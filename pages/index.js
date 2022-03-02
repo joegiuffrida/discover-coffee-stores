@@ -6,6 +6,7 @@ import Banner from '../components/Banner';
 import Card from '../components/Card';
 import { QUERIES } from '../constants';
 import { fetchCoffeeStores } from '../lib/coffee-stores';
+import useTrackLocation from '../hooks/use-track-location';
 
 export const getStaticProps = async () => {
   const coffeeStoreData = await fetchCoffeeStores();
@@ -18,8 +19,14 @@ export const getStaticProps = async () => {
 };
 
 export default function Home({ coffeeStores }) {
+  const { handleTrackLocation, latLong, locationErrorMsg, isFindingLocation } =
+    useTrackLocation();
+
+  console.log({ latLong, locationErrorMsg });
+
   const handleOnBannerBtnClick = () => {
     console.log('hi banner button was clicked');
+    handleTrackLocation();
   };
 
   return (
@@ -33,9 +40,12 @@ export default function Home({ coffeeStores }) {
           <Image src="/static/hero-image.png" width={700} height={400} />
         </ImageWrapper> */}
         <Banner
-          buttonText="View stores nearby"
+          buttonText={isFindingLocation ? 'Locating...' : 'View stores nearby'}
           handleOnClick={handleOnBannerBtnClick}
         />
+        {locationErrorMsg && (
+          <p>{`Something went wrong: ${locationErrorMsg}`}</p>
+        )}
         {coffeeStores.length > 0 && (
           <>
             <CoffeeStoresHeading>Sacramento Stores</CoffeeStoresHeading>
@@ -50,9 +60,6 @@ export default function Home({ coffeeStores }) {
                       store.imgUrl ||
                       'https://images.unsplash.com/photo-1504753793650-d4a2b783c15e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80'
                     }
-                    websiteUrl={store.websiteUrl}
-                    address={store.address}
-                    neighborhood={store.neighbourhood}
                   />
                 );
               })}
