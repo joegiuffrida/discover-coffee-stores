@@ -9,20 +9,12 @@ import { fetchCoffeeStores } from '../../lib/coffee-stores';
 
 export const getStaticProps = async ({ params }) => {
   const coffeeStoreData = await fetchCoffeeStores();
+  const findCoffeeStoreById = coffeeStoreData.find((coffeeStore) => {
+    return coffeeStore.id === params.id;
+  });
   return {
     props: {
-      coffeeStore: coffeeStoreData.find((coffeeStore) => {
-        return (
-          coffeeStore.name
-            .replace(/[\s\/]/g, '-')
-            .replace(/'/g, '')
-            .toLowerCase() ===
-          params.id
-            .replace(/[\s\/]/g, '-')
-            .replace(/'/g, '')
-            .toLowerCase()
-        );
-      }),
+      coffeeStore: findCoffeeStoreById ? findCoffeeStoreById : {},
     },
   };
 };
@@ -31,16 +23,13 @@ export const getStaticPaths = async () => {
   const coffeeStoreData = await fetchCoffeeStores();
   const paths = coffeeStoreData.map((coffeeStore) => ({
     params: {
-      id: coffeeStore.name
-        .replace(/[\s\/]/g, '-')
-        .replace(/'/g, '')
-        .toLowerCase(),
+      id: coffeeStore.id,
     },
   }));
 
   return {
     paths,
-    fallback: false,
+    fallback: true,
   };
 };
 
@@ -51,7 +40,7 @@ const CoffeeStore = ({ coffeeStore }) => {
     return <div>Loading...</div>;
   }
 
-  const { name, location, imgUrl } = coffeeStore;
+  const { name, address, imgUrl, neighborhood } = coffeeStore;
 
   const handleUpvoteButton = () => {
     console.log('you clicked the up vote button!');
@@ -86,14 +75,17 @@ const CoffeeStore = ({ coffeeStore }) => {
         </ColOne>
 
         <ColTwo>
-          <IconWrapper>
-            <Image src="/static/icons/places.svg" width={24} height={24} />
-            <Text>{location.formatted_address}</Text>
-          </IconWrapper>
-          {location.neighborhood && (
+          {address && (
+            <IconWrapper>
+              <Image src="/static/icons/places.svg" width={24} height={24} />
+              <Text>{address}</Text>
+            </IconWrapper>
+          )}
+
+          {neighborhood && (
             <IconWrapper>
               <Image src="/static/icons/nearMe.svg" width={24} height={24} />
-              <Text>{location.neighborhood}</Text>
+              <Text>{neighborhood[0]}</Text>
             </IconWrapper>
           )}
           <IconWrapper>

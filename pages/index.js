@@ -7,6 +7,7 @@ import Card from '../components/Card';
 import { QUERIES } from '../constants';
 import { fetchCoffeeStores } from '../lib/coffee-stores';
 import useTrackLocation from '../hooks/use-track-location';
+import { useEffect, useState } from 'react';
 
 export const getStaticProps = async () => {
   const coffeeStoreData = await fetchCoffeeStores();
@@ -21,8 +22,23 @@ export const getStaticProps = async () => {
 export default function Home({ coffeeStores }) {
   const { handleTrackLocation, latLong, locationErrorMsg, isFindingLocation } =
     useTrackLocation();
-
+  const [userFetchedCoffeeStores, setUserFetchedCoffeeStores] = useState('');
+  const [userFetchedCoffeeStoresError, setUserFetchedCoffeeStoresError] =
+    useState(null);
   console.log({ latLong, locationErrorMsg });
+
+  useEffect(async () => {
+    if (latLong) {
+      try {
+        const fetchedCoffeeStores = await fetchCoffeeStores(latLong, 10);
+        //set coffee stores
+        setUserFetchedCoffeeStores(fetchedCoffeeStores);
+        console.log({ userFetchedCoffeeStores });
+      } catch (error) {
+        setUserFetchedCoffeeStoresError(error.message);
+      }
+    }
+  }, [latLong]);
 
   const handleOnBannerBtnClick = () => {
     console.log('hi banner button was clicked');
@@ -46,6 +62,32 @@ export default function Home({ coffeeStores }) {
         {locationErrorMsg && (
           <p>{`Something went wrong: ${locationErrorMsg}`}</p>
         )}
+        {userFetchedCoffeeStoresError && (
+          <p>{`Something went wrong: ${userFetchedCoffeeStoresError}`}</p>
+        )}
+        {/* rendering the coffee stores near the user after they click the view
+        stores nearby button */}
+        {userFetchedCoffeeStores.length > 0 && (
+          <>
+            <CoffeeStoresHeading>Stores near me</CoffeeStoresHeading>
+            <CardLayout>
+              {userFetchedCoffeeStores.map((store) => {
+                return (
+                  <Card
+                    key={store.id}
+                    id={store.id}
+                    name={store.name}
+                    imgUrl={
+                      store.imgUrl ||
+                      'https://images.unsplash.com/photo-1504753793650-d4a2b783c15e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80'
+                    }
+                  />
+                );
+              })}
+            </CardLayout>
+          </>
+        )}
+        {/* rendering the default coffee stores */}
         {coffeeStores.length > 0 && (
           <>
             <CoffeeStoresHeading>Sacramento Stores</CoffeeStoresHeading>
@@ -123,6 +165,7 @@ const CardLayout = styled.div`
   grid-template-columns: repeat(1, minmax(0, 1fr));
   column-gap: 1.5rem;
   row-gap: 1.5rem;
+  margin-bottom: 2.5rem;
 
   @media ${QUERIES.smallAndUp} {
     grid-template-columns: repeat(2, minmax(0, 1fr));

@@ -4,15 +4,9 @@ import Link from 'next/link';
 import { QUERIES } from '../constants';
 
 const Card = ({ id, name, imgUrl }) => {
-  // replace the spaces and / characters in the name with dashes, replace ' characters with nothing and make it lowercase. doing this so the path is the name of the coffee shop rather than just an id number
-  const urlPath = name
-    .replace(/[\s\/]/g, '-')
-    .replace(/'/g, '')
-    .toLowerCase();
-
   return (
     <div>
-      <Link href={`/coffee-store/${urlPath}`} passHref>
+      <Link href={`/coffee-store/${id}`} passHref>
         <CardLink>
           <Container>
             <CardHeaderWrapper>
