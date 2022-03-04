@@ -6,6 +6,9 @@ import styled from 'styled-components';
 
 import { QUERIES } from '../../constants';
 import { fetchCoffeeStores } from '../../lib/coffee-stores';
+import { useContext, useEffect, useState } from 'react';
+import { StoreContext } from '../_app';
+import { isEmpty } from '../../utils';
 
 export const getStaticProps = async ({ params }) => {
   const coffeeStoreData = await fetchCoffeeStores();
@@ -33,12 +36,31 @@ export const getStaticPaths = async () => {
   };
 };
 
-const CoffeeStore = ({ coffeeStore }) => {
+const CoffeeStore = (initialProps) => {
   const router = useRouter();
 
   if (router.isFallback) {
     return <div>Loading...</div>;
   }
+
+  const id = router.query.id;
+
+  const [coffeeStore, setCoffeeStore] = useState(initialProps.coffeeStore);
+
+  const {
+    state: { userCoffeeStores },
+  } = useContext(StoreContext);
+
+  useEffect(() => {
+    if (isEmpty(coffeeStore)) {
+      if (userCoffeeStores.length > 0) {
+        const findUserCoffeeStoreById = userCoffeeStores.find((coffeeStore) => {
+          return coffeeStore.id === id;
+        });
+        setCoffeeStore(findUserCoffeeStoreById);
+      }
+    }
+  }, [id]);
 
   const { name, address, imgUrl, neighborhood } = coffeeStore;
 
