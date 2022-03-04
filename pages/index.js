@@ -7,7 +7,8 @@ import Card from '../components/Card';
 import { QUERIES } from '../constants';
 import { fetchCoffeeStores } from '../lib/coffee-stores';
 import useTrackLocation from '../hooks/use-track-location';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
+import { ACTION_TYPES, StoreContext } from '../pages/_app';
 
 export const getStaticProps = async () => {
   const coffeeStoreData = await fetchCoffeeStores();
@@ -20,20 +21,26 @@ export const getStaticProps = async () => {
 };
 
 export default function Home({ coffeeStores }) {
-  const { handleTrackLocation, latLong, locationErrorMsg, isFindingLocation } =
+  const { handleTrackLocation, locationErrorMsg, isFindingLocation } =
     useTrackLocation();
-  const [userFetchedCoffeeStores, setUserFetchedCoffeeStores] = useState('');
+  // const [userFetchedCoffeeStores, setUserFetchedCoffeeStores] = useState('');
   const [userFetchedCoffeeStoresError, setUserFetchedCoffeeStoresError] =
     useState(null);
-  console.log({ latLong, locationErrorMsg });
+
+  const { dispatch, state } = useContext(StoreContext);
+
+  const { userCoffeeStores, latLong } = state;
 
   useEffect(async () => {
     if (latLong) {
       try {
         const fetchedCoffeeStores = await fetchCoffeeStores(latLong, 10);
         //set coffee stores
-        setUserFetchedCoffeeStores(fetchedCoffeeStores);
-        console.log({ userFetchedCoffeeStores });
+        // setUserFetchedCoffeeStores(fetchedCoffeeStores);
+        dispatch({
+          type: ACTION_TYPES.SET_USER_COFFEE_STORES,
+          payload: { userCoffeeStores: fetchedCoffeeStores },
+        });
       } catch (error) {
         setUserFetchedCoffeeStoresError(error.message);
       }
@@ -62,16 +69,16 @@ export default function Home({ coffeeStores }) {
         {locationErrorMsg && (
           <p>{`Something went wrong: ${locationErrorMsg}`}</p>
         )}
-        {userFetchedCoffeeStoresError && (
+        {/* {userFetchedCoffeeStoresError && (
           <p>{`Something went wrong: ${userFetchedCoffeeStoresError}`}</p>
-        )}
+        )} */}
         {/* rendering the coffee stores near the user after they click the view
         stores nearby button */}
-        {userFetchedCoffeeStores.length > 0 && (
+        {userCoffeeStores.length > 0 && (
           <>
             <CoffeeStoresHeading>Stores near me</CoffeeStoresHeading>
             <CardLayout>
-              {userFetchedCoffeeStores.map((store) => {
+              {userCoffeeStores.map((store) => {
                 return (
                   <Card
                     key={store.id}
