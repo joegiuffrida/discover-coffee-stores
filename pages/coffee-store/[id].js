@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import { QUERIES } from '../../constants';
 import { fetchCoffeeStores } from '../../lib/coffee-stores';
 import { useContext, useEffect, useState } from 'react';
-import { StoreContext } from '../_app';
+import { StoreContext } from '../../store/store-context';
 import { isEmpty } from '../../utils';
 
 export const getStaticProps = async ({ params }) => {

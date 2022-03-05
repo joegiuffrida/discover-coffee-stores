@@ -8,7 +8,7 @@ import { QUERIES } from '../constants';
 import { fetchCoffeeStores } from '../lib/coffee-stores';
 import useTrackLocation from '../hooks/use-track-location';
 import { useEffect, useState, useContext } from 'react';
-import { ACTION_TYPES, StoreContext } from '../pages/_app';
+import { ACTION_TYPES, StoreContext } from '../store/store-context';
 
 export const getStaticProps = async () => {
   const coffeeStoreData = await fetchCoffeeStores();
@@ -34,13 +34,18 @@ export default function Home({ coffeeStores }) {
   useEffect(async () => {
     if (latLong) {
       try {
-        const fetchedCoffeeStores = await fetchCoffeeStores(latLong, 10);
         //set coffee stores
+        const response = await fetch(
+          `/api/getCoffeeStoresByLocation?latLong=${latLong}&limit=30`
+        );
+        const fetchedCoffeeStores = await response.json();
+        console.log('fetched coffee stores: ', fetchedCoffeeStores);
         // setUserFetchedCoffeeStores(fetchedCoffeeStores);
         dispatch({
           type: ACTION_TYPES.SET_USER_COFFEE_STORES,
           payload: { userCoffeeStores: fetchedCoffeeStores },
         });
+        setUserFetchedCoffeeStoresError('');
       } catch (error) {
         setUserFetchedCoffeeStoresError(error.message);
       }
@@ -69,9 +74,9 @@ export default function Home({ coffeeStores }) {
         {locationErrorMsg && (
           <p>{`Something went wrong: ${locationErrorMsg}`}</p>
         )}
-        {/* {userFetchedCoffeeStoresError && (
+        {userFetchedCoffeeStoresError && (
           <p>{`Something went wrong: ${userFetchedCoffeeStoresError}`}</p>
-        )} */}
+        )}
         {/* rendering the coffee stores near the user after they click the view
         stores nearby button */}
         {userCoffeeStores.length > 0 && (

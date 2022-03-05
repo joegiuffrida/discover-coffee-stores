@@ -1,6 +1,6 @@
 // this file is to get the lat/long (location) of the user so we can tailor the results for coffee shops around their area after they click the find nearby shops button
 import { useState, useContext } from 'react';
-import { ACTION_TYPES, StoreContext } from '../pages/_app';
+import { ACTION_TYPES, StoreContext } from '../store/store-context';
 
 const useTrackLocation = () => {
   const [locationErrorMsg, setLocationErrorMsg] = useState('');
