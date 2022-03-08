@@ -8,10 +8,13 @@ const table = base('coffee-stores');
 const createCoffeeStoreHandler = async (req, res) => {
   if (req.method === 'POST') {
     // find a record
+
+    const { id, name, address, neighborhood, imgUrl, votes } = req.body;
+
     try {
       const findCoffeeStoreRecords = await table
         .select({
-          filterByFormula: `id=2`,
+          filterByFormula: `id=${id}`,
         })
         .firstPage();
 
@@ -28,12 +31,12 @@ const createCoffeeStoreHandler = async (req, res) => {
         const createRecord = await table.create([
           {
             fields: {
-              id: '2',
-              name: 'The Coffee Joint',
-              address: '1234 Coffee St',
-              neighborhood: 'midtown',
-              imgUrl: 'https://img2.com',
-              votes: 25,
+              id: id,
+              name: name,
+              address: address,
+              neighborhood: neighborhood,
+              imgUrl: imgUrl,
+              votes: votes,
             },
           },
         ]);
