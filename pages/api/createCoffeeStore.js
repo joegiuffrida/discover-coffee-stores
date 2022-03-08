@@ -1,9 +1,4 @@
-const Airtable = require('airtable');
-const base = new Airtable({ apiKey: process.env.AIRTABLE_API_KEY }).base(
-  process.env.AIRTABLE_BASE_KEY
-);
-
-const table = base('coffee-stores');
+import { getFieldsRecord, table } from '../../lib/airtable';
 
 const createCoffeeStoreHandler = async (req, res) => {
   if (req.method === 'POST') {
@@ -16,17 +11,13 @@ const createCoffeeStoreHandler = async (req, res) => {
       if (id) {
         const findCoffeeStoreRecords = await table
           .select({
-            filterByFormula: `id=${id}`,
+            filterByFormula: `id="${id}"`,
           })
           .firstPage();
 
         if (findCoffeeStoreRecords.length !== 0) {
-          // we're mapping over findCoffeeStoreRecords because we only want the fields portion of the data which has our record info
-          const record = findCoffeeStoreRecords.map((storeRecord) => {
-            return {
-              ...storeRecord.fields,
-            };
-          });
+          // we're mapping over findCoffeeStoreRecords because we only want the fields portion of the data which has our record info. The mapping has been refactored to the airtable.js file through getFieldsRecord
+          const record = getFieldsRecord(findCoffeeStoreRecords);
           res.json(record);
         } else {
           // create a record
@@ -45,11 +36,7 @@ const createCoffeeStoreHandler = async (req, res) => {
               },
             ]);
             // transforming the createRecord data to only include the fields data which has our record data that we need and storing it in createdRecord
-            const createdRecord = createRecord.map((storeRecord) => {
-              return {
-                ...storeRecord.fields,
-              };
-            });
+            const createdRecord = getFieldsRecord(createRecord);
             res.json(createdRecord);
           } else {
             res.status(400).json({ message: `name is missing` });
