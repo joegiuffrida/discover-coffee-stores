@@ -1,4 +1,4 @@
-import { getFieldsRecord, table } from '../../lib/airtable';
+import { findRecordByFilter, getFieldsRecord, table } from '../../lib/airtable';
 
 const createCoffeeStoreHandler = async (req, res) => {
   if (req.method === 'POST') {
@@ -9,15 +9,9 @@ const createCoffeeStoreHandler = async (req, res) => {
     try {
       // if (id){} is validation saying we need id field in order to proceed
       if (id) {
-        const findCoffeeStoreRecords = await table
-          .select({
-            filterByFormula: `id="${id}"`,
-          })
-          .firstPage();
+        const record = await findRecordByFilter(id);
 
-        if (findCoffeeStoreRecords.length !== 0) {
-          // we're mapping over findCoffeeStoreRecords because we only want the fields portion of the data which has our record info. The mapping has been refactored to the airtable.js file through getFieldsRecord
-          const record = getFieldsRecord(findCoffeeStoreRecords);
+        if (record.length !== 0) {
           res.json(record);
         } else {
           // create a record
