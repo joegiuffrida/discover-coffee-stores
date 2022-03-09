@@ -88,13 +88,20 @@ const CoffeeStore = (initialProps) => {
           handleCreateCoffeeStore(findUserCoffeeStoreById);
         }
       }
+    } else {
+      // SSG
+      handleCreateCoffeeStore(initialProps.coffeeStore);
     }
-  }, [id]);
+  }, [id, initialProps, initialProps.coffeeStore]);
 
   const { name, address, imgUrl, neighborhood } = coffeeStore;
 
+  const [votingCount, setVotingCount] = useState(1);
+
   const handleUpvoteButton = () => {
     console.log('you clicked the up vote button!');
+    let count = votingCount + 1;
+    setVotingCount(count);
   };
 
   return (
@@ -141,7 +148,7 @@ const CoffeeStore = (initialProps) => {
           )}
           <IconWrapper>
             <Image src="/static/icons/star.svg" width={24} height={24} />
-            <Text>1</Text>
+            <Text>{votingCount}</Text>
           </IconWrapper>
           <UpvoteButton onClick={handleUpvoteButton}>Up Vote!</UpvoteButton>
         </ColTwo>
