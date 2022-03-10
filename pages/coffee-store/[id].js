@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+import useSWR from 'swr';
 import Link from 'next/link';
 import Head from 'next/head';
 import Image from 'next/image';
@@ -8,7 +9,7 @@ import { QUERIES } from '../../constants';
 import { fetchCoffeeStores } from '../../lib/coffee-stores';
 import { useContext, useEffect, useState } from 'react';
 import { StoreContext } from '../../store/store-context';
-import { isEmpty } from '../../utils';
+import { isEmpty, fetcher } from '../../utils';
 
 export const getStaticProps = async ({ params }) => {
   const coffeeStoreData = await fetchCoffeeStores();
@@ -98,6 +99,19 @@ const CoffeeStore = (initialProps) => {
 
   const [votingCount, setVotingCount] = useState(1);
 
+  const { data, error } = useSWR(`/api/getCoffeeStoreById?id=${id}`, fetcher);
+
+  useEffect(() => {
+    if (data && data.length > 0) {
+      setCoffeeStore(data[0]);
+      setVotingCount(data[0].votes);
+    }
+  }, [data]);
+
+  if (error) {
+    return <div>Something went wrong retrieving coffee store page</div>;
+  }
+
   const handleUpvoteButton = () => {
     console.log('you clicked the up vote button!');
     let count = votingCount + 1;
@@ -143,7 +157,7 @@ const CoffeeStore = (initialProps) => {
           {neighborhood && (
             <IconWrapper>
               <Image src="/static/icons/nearMe.svg" width={24} height={24} />
-              <Text>{neighborhood[0]}</Text>
+              <Text>{neighborhood}</Text>
             </IconWrapper>
           )}
           <IconWrapper>
