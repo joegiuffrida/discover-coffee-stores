@@ -10,7 +10,7 @@ const getCoffeeStoreByIdHandler = async (req, res) => {
       if (record.length !== 0) {
         res.json(record);
       } else {
-        res.status(500).json({
+        res.json({
           message: `id: ${id} could not be found`,
         });
       }

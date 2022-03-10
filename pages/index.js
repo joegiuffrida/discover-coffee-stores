@@ -39,8 +39,7 @@ export default function Home({ coffeeStores }) {
           `/api/getCoffeeStoresByLocation?latLong=${latLong}&limit=30`
         );
         const fetchedCoffeeStores = await response.json();
-        console.log('fetched coffee stores: ', fetchedCoffeeStores);
-        // setUserFetchedCoffeeStores(fetchedCoffeeStores);
+
         dispatch({
           type: ACTION_TYPES.SET_USER_COFFEE_STORES,
           payload: { userCoffeeStores: fetchedCoffeeStores },

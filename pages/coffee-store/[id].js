@@ -72,7 +72,6 @@ const CoffeeStore = (initialProps) => {
       });
 
       const dbCoffeeStore = response.json();
-      console.log({ dbCoffeeStore });
     } catch (error) {
       console.error(`Error creating coffee store: ${error}`);
     }
@@ -97,7 +96,7 @@ const CoffeeStore = (initialProps) => {
 
   const { name, address, imgUrl, neighborhood } = coffeeStore;
 
-  const [votingCount, setVotingCount] = useState(1);
+  const [votingCount, setVotingCount] = useState(0);
 
   const { data, error } = useSWR(`/api/getCoffeeStoreById?id=${id}`, fetcher);
 
@@ -112,10 +111,27 @@ const CoffeeStore = (initialProps) => {
     return <div>Something went wrong retrieving coffee store page</div>;
   }
 
-  const handleUpvoteButton = () => {
-    console.log('you clicked the up vote button!');
-    let count = votingCount + 1;
-    setVotingCount(count);
+  const handleUpvoteButton = async () => {
+    try {
+      const response = await fetch('/api/favoriteCoffeeStoreById', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id,
+        }),
+      });
+
+      const dbCoffeeStore = response.json();
+
+      if (dbCoffeeStore && dbCoffeeStore.length > 0) {
+        let count = votingCount + 1;
+        setVotingCount(count);
+      }
+    } catch (error) {
+      console.error(`Error updating votes: ${error}`);
+    }
   };
 
   return (
