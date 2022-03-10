@@ -1,5 +1,5 @@
 import GlobalStyles from '../styles/GlobalStyles';
-import Footer from '../components/layout/Footer';
+
 import StoreContextProvider from '../store/store-context';
 
 function MyApp({ Component, pageProps }) {
@@ -9,7 +9,6 @@ function MyApp({ Component, pageProps }) {
       <StoreContextProvider>
         <Component {...pageProps} />
       </StoreContextProvider>
-      <Footer />
     </>
   );
 }

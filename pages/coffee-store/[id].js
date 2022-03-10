@@ -65,7 +65,7 @@ const CoffeeStore = (initialProps) => {
           id,
           name,
           address: address || '',
-          neighborhood: neighborhood[0] || '',
+          neighborhood: neighborhood || '',
           imgUrl,
           votes: 0,
         }),

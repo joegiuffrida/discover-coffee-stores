@@ -23,7 +23,7 @@ const createCoffeeStoreHandler = async (req, res) => {
                   id: id,
                   name: name,
                   address: address,
-                  neighborhood: neighborhood,
+                  neighborhood: neighborhood[0],
                   imgUrl: imgUrl,
                   votes: votes,
                 },
@@ -31,6 +31,7 @@ const createCoffeeStoreHandler = async (req, res) => {
             ]);
             // transforming the createRecord data to only include the fields data which has our record data that we need and storing it in createdRecord
             const createdRecord = getFieldsRecord(createRecord);
+
             res.json(createdRecord);
           } else {
             res.status(400).json({ message: `name is missing` });

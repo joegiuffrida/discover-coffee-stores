@@ -52,7 +52,6 @@ export default function Home({ coffeeStores }) {
   }, [latLong]);
 
   const handleOnBannerBtnClick = () => {
-    console.log('hi banner button was clicked');
     handleTrackLocation();
   };
 
