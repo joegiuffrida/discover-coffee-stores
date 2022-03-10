@@ -40,13 +40,11 @@ export const getStaticPaths = async () => {
 const CoffeeStore = (initialProps) => {
   const router = useRouter();
 
-  if (router.isFallback) {
-    return <div>Loading...</div>;
-  }
-
   const id = router.query.id;
 
-  const [coffeeStore, setCoffeeStore] = useState(initialProps.coffeeStore);
+  const [coffeeStore, setCoffeeStore] = useState(
+    initialProps.coffeeStore || {}
+  );
 
   const {
     state: { userCoffeeStores },
@@ -78,7 +76,7 @@ const CoffeeStore = (initialProps) => {
   };
 
   useEffect(() => {
-    if (isEmpty(coffeeStore)) {
+    if (isEmpty(initialProps.coffeeStore)) {
       if (userCoffeeStores.length > 0) {
         const findUserCoffeeStoreById = userCoffeeStores.find((coffeeStore) => {
           return coffeeStore.id === id;
@@ -92,9 +90,14 @@ const CoffeeStore = (initialProps) => {
       // SSG
       handleCreateCoffeeStore(initialProps.coffeeStore);
     }
-  }, [id, initialProps, initialProps.coffeeStore]);
+  }, [id, initialProps, initialProps.coffeeStore, userCoffeeStores]);
 
-  const { name, address, imgUrl, neighborhood } = coffeeStore;
+  const {
+    name = '',
+    address = '',
+    imgUrl = '',
+    neighborhood = '',
+  } = coffeeStore;
 
   const [votingCount, setVotingCount] = useState(0);
 
@@ -109,6 +112,10 @@ const CoffeeStore = (initialProps) => {
 
   if (error) {
     return <div>Something went wrong retrieving coffee store page</div>;
+  }
+
+  if (router.isFallback) {
+    return <div>Loading...</div>;
   }
 
   const handleUpvoteButton = async () => {
