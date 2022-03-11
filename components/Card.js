@@ -13,7 +13,7 @@ const Card = ({ id, name, imgUrl }) => {
               <CardHeader>{name}</CardHeader>
             </CardHeaderWrapper>
             <CardImageWrapper>
-              <CardImage src={imgUrl} width={260} height={160} />
+              <CardImage src={imgUrl} alt={name} width={260} height={160} />
             </CardImageWrapper>
           </Container>
         </CardLink>

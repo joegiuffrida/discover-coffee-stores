@@ -145,6 +145,7 @@ const CoffeeStore = (initialProps) => {
     <Layout>
       <Head>
         <title>{name}</title>
+        <meta name="description" content={`Enjoy ${name}`} />
       </Head>
       <Container>
         <ColOne>
@@ -172,19 +173,34 @@ const CoffeeStore = (initialProps) => {
         <ColTwo>
           {address && (
             <IconWrapper>
-              <Image src="/static/icons/places.svg" width={24} height={24} />
+              <Image
+                src="/static/icons/places.svg"
+                width={24}
+                height={24}
+                alt="places icon"
+              />
               <Text>{address}</Text>
             </IconWrapper>
           )}
 
           {neighborhood && (
             <IconWrapper>
-              <Image src="/static/icons/nearMe.svg" width={24} height={24} />
+              <Image
+                src="/static/icons/nearMe.svg"
+                width={24}
+                height={24}
+                alt="near me icon"
+              />
               <Text>{neighborhood}</Text>
             </IconWrapper>
           )}
           <IconWrapper>
-            <Image src="/static/icons/star.svg" width={24} height={24} />
+            <Image
+              src="/static/icons/star.svg"
+              width={24}
+              height={24}
+              alt="upvotes icon"
+            />
             <Text>{votingCount}</Text>
           </IconWrapper>
           <UpvoteButton onClick={handleUpvoteButton}>Up Vote!</UpvoteButton>

@@ -63,6 +63,7 @@ export default function Home({ coffeeStores }) {
       <Head>
         <title>Discover Coffee Near You</title>
         <link rel="icon" href="favicon.ico" />
+        <meta name="description" content="Discover coffee stores near you!" />
       </Head>
       <Main>
         {/* <ImageWrapper>
