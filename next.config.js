@@ -6,6 +6,7 @@ const nextConfig = {
     styledComponents: true,
   },
   images: {
+    formats: ['image/avif', 'image/webp'],
     domains: ['images.unsplash.com'],
   },
 };
